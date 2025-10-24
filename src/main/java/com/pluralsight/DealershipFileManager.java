@@ -1,16 +1,13 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class DealershipFileManager {
     Scanner myScanner = new Scanner(System.in);
     public Dealership getDealership() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("inventory.csv"));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.csv"));
             String header = myScanner.nextLine();
             String[] parts = header.split("//|");
             Dealership dealership = new Dealership(parts[0], parts[1], parts[2]);
@@ -29,6 +26,19 @@ public class DealershipFileManager {
                 dealership.addVehicle(new Vehicle(vin, year, make, model, vehicleType, color, odometer, price));
             }
             return dealership;
-        } catch (IOException e)
+        } catch (IOException e) {
+            System.out.println("Error loading your dealership file: " + e.getMessage());
+            return null;
+        }
+    }
+    public void saveDealership(Dealership dealership){
+        try(PrintWriter printWriter = new PrintWriter(new FileWriter("inventory.csv"))) {
+            printWriter.println(dealership.getName() + "|" + dealership.getAddress() + "|" + dealership.getPhone());
+            for (Vehicle vehicle: dealership.getAllVehicles()) {
+                printWriter.println(vehicle.getVin() + "|" + vehicle.getYear() + "|" + vehicle.getMake() + "|" + vehicle.getModel() + "|" + vehicle.getVehicleType() + "|" + vehicle.getColor() + "|" + vehicle.getOdometer() + "|" + vehicle.getPrice());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving your dealership file details: " + e.getMessage());
+        }
     }
 }
