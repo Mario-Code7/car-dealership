@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -69,7 +70,8 @@ public class UserInterface {
         DealershipFileManager fileManager = new DealershipFileManager();
         this.dealership = fileManager.getDealership();
     }
-    private void displayVehicles() {
-
+    private void displayVehicles(List<Vehicle> vehicles) {
+        if () {
+        }
     }
 }
