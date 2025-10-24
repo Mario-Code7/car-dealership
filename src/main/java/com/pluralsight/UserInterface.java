@@ -66,11 +66,11 @@ public class UserInterface {
             }
         } while(choice != 0);
     }
-    private void init() {
+    public void init() {
         DealershipFileManager fileManager = new DealershipFileManager();
         this.dealership = fileManager.getDealership();
     }
-    private void displayVehicles(List<Vehicle> vehicles) {
+    public void displayVehicles(List<Vehicle> vehicles) {
         if (vehicles.isEmpty()) {
             System.out.println("No vehicles found.");
         } else {
@@ -79,12 +79,12 @@ public class UserInterface {
             }
         }
     }
-    private void processGetByAllVehiclesRequest() {
+    public void processGetByAllVehiclesRequest() {
         List<Vehicle> byAllVehicles = dealership.getAllVehicles();
         displayVehicles(byAllVehicles);
     }
 
-    private void processGetByPriceRequest() {
+    public void processGetByPriceRequest() {
         System.out.println("Enter min price: ");
         double min = myScanner.nextDouble();
         System.out.println("Enter max price: ");
@@ -92,38 +92,38 @@ public class UserInterface {
         displayVehicles(dealership.getVehiclesByPrice(min, max));
     }
 
-    private void processGetByMakeModelRequest() {
+    public void processGetByMakeModelRequest() {
         System.out.println("Enter make: ");
         String make = myScanner.nextLine();
         System.out.println("Enter model: ");
         String model = myScanner.nextLine();
         displayVehicles(dealership.getVehiclesByMakeModel(make, model));
     }
-    private void processGetByYearRequest() {
+    public void processGetByYearRequest() {
         System.out.println("Enter min year: ");
         int min = myScanner.nextInt();
         System.out.println("Enter max year: ");
         int max = myScanner.nextInt();
         displayVehicles(dealership.getVehiclesByYear(min, max));
     }
-    private void processGetByColorRequest() {
+    public void processGetByColorRequest() {
         System.out.println("Enter color: ");
         String color = myScanner.nextLine();
         displayVehicles(dealership.getVehiclesByColor(color));
     }
-    private void processGetByMileageRequest() {
+    public void processGetByMileageRequest() {
         System.out.println("Enter min mileage: ");
         int min = myScanner.nextInt();
         System.out.println("Enter max mileage: ");
         int max = myScanner.nextInt();
         displayVehicles(dealership.getVehiclesByMileage(min, max));
     }
-    private void processGetByVehicleTypeRequest() {
+    public void processGetByVehicleTypeRequest() {
         System.out.println("Enter vehicle type(car, truck, etc.): ");
         String vehicleType = myScanner.nextLine();
         displayVehicles(dealership.getVehiclesByType(vehicleType));
     }
-    private void processGetByAddVehicleRequest() {
+    public void processGetByAddVehicleRequest() {
         System.out.println("Vin: ");
         int vin = myScanner.nextInt();
         System.out.println("Year: ");
@@ -147,7 +147,7 @@ public class UserInterface {
         System.out.println("Vehicle added!");
     }
 
-    private void processGetByRemoveVehicleRequest(){
+    public void processGetByRemoveVehicleRequest(){
         System.out.println("Enter vin to remove: ");
         int vin = myScanner.nextInt();
         Vehicle toRemove = null;
@@ -156,6 +156,11 @@ public class UserInterface {
                 toRemove = vehicle;
             }
         }
+        if (toRemove != null) {
+            dealership.removeVehicles(toRemove);
+            System.out.println("Vehicle removed!");
+        } else {
+            System.out.println("Vin not found!");
+        }
     }
-
 }
