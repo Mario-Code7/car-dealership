@@ -4,16 +4,18 @@ import java.io.*;
 import java.util.Scanner;
 
 public class DealershipFileManager {
-    Scanner myScanner = new Scanner(System.in);
     public Dealership getDealership() {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.csv"));
-            String header = myScanner.nextLine();
-            String[] parts = header.split("//|");
+
+            String header = bufferedReader.readLine();
+            String[] parts = header.split("\\|");
+
             Dealership dealership = new Dealership(parts[0], parts[1], parts[2]);
 
-            while (myScanner.hasNextLine()) {
-                String[] vehicle = myScanner.nextLine().split("\\|");
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                String[] vehicle = line.split("\\|");
                 int vin = Integer.parseInt(vehicle[0]);
                 int year = Integer.parseInt(vehicle[1]);
                 String make = vehicle[2];

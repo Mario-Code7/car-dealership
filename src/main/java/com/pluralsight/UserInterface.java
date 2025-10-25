@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-    private Scanner myScanner = new Scanner(System.in);
+    private final Scanner myScanner = new Scanner(System.in);
     private Dealership dealership;
 
     public UserInterface(Dealership dealership) {
@@ -12,11 +12,11 @@ public class UserInterface {
     }
 
     public void display() {
-        init();
-
         int choice;
         do {
-            System.out.print("\n==== " + dealership.getName() + "====");
+            System.out.println("\n****************************");
+            System.out.println("      Dealership Menu        ");
+            System.out.println("****************************\n");
             System.out.println("1. List All Vehicles");
             System.out.println("2. Search by price");
             System.out.println("3. Search by make/model");
@@ -27,7 +27,8 @@ public class UserInterface {
             System.out.println("8. Add vehicle");
             System.out.println("9. Remove vehicle");
             System.out.println("10. Exit");
-            System.out.println("Enter your choice: ");
+            System.out.println("*********************************");
+            System.out.print("Enter your choice: ");
 
             choice = myScanner.nextInt();
             myScanner.nextLine();
@@ -59,8 +60,10 @@ public class UserInterface {
                     break;
                 case 9:
                     processGetByRemoveVehicleRequest();
-                case 10:
-                    System.out.println("Exit");
+                    break;
+                case 0:
+                    System.out.println("Goodbye...see you again soon");
+                    break;
                 default:
                     System.out.println("Invalid choice");
             }
@@ -70,14 +73,29 @@ public class UserInterface {
         DealershipFileManager fileManager = new DealershipFileManager();
         this.dealership = fileManager.getDealership();
     }
-    public void displayVehicles(List<Vehicle> vehicles) {
+    private void displayVehicles(List<Vehicle> vehicles) {
         if (vehicles.isEmpty()) {
             System.out.println("No vehicles found.");
-        } else {
-            for (Vehicle vehicle: vehicles) {
-                System.out.println(vehicle);
-            }
+            return;
         }
+
+        String header = String.format("%-8s %-6s %-10s %-12s %-8s %-10s %-10s %-11s",
+                "VIN", "YEAR", "MAKE", "MODEL", "TYPE", "COLOR", "ODOMETER", "PRICE");
+        System.out.println(header);
+        System.out.println("──────────────────────────────────────────────────────────────────────────────────");
+
+        for (Vehicle vehicle: vehicles) {
+            String result = String.format("%-8d %-6d %-10s %-12s %-8s %-10s %-10d $%,10.2f",
+                    vehicle.getVin(), vehicle.getYear(),
+                    vehicle.getMake(), vehicle.getModel(),
+                    vehicle.getVehicleType(), vehicle.getColor(),
+                    vehicle.getOdometer(), vehicle.getPrice());
+            System.out.println(result);
+        }
+
+//            for (Vehicle vehicle: vehicles) {
+//                System.out.println(vehicle);
+//            }
     }
     public void processGetByAllVehiclesRequest() {
         List<Vehicle> byAllVehicles = dealership.getAllVehicles();
@@ -124,11 +142,13 @@ public class UserInterface {
         displayVehicles(dealership.getVehiclesByType(vehicleType));
     }
     public void processGetByAddVehicleRequest() {
+
         System.out.println("Vin: ");
         int vin = myScanner.nextInt();
         System.out.println("Year: ");
         int year = myScanner.nextInt();
         myScanner.nextLine();
+
         System.out.println("Make: ");
         String make = myScanner.nextLine();
         System.out.println("Model: ");
@@ -157,7 +177,7 @@ public class UserInterface {
             }
         }
         if (toRemove != null) {
-            dealership.removeVehicles(toRemove);
+            dealership.removeVehicle(toRemove);
             System.out.println("Vehicle removed!");
         } else {
             System.out.println("Vin not found!");

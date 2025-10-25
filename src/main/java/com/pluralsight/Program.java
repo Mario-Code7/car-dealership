@@ -7,7 +7,6 @@ public class Program {
 
         if (dealership != null) {
             UserInterface ui = new UserInterface(dealership);
-            ui.init();
             ui.display();
             dealershipFileManager.saveDealership(dealership);
         } else {
